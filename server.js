@@ -10,8 +10,8 @@ const bodyParser = require('body-parser');
 //use hbs view engine
 const hbs = require('hbs');
 
-// use model module
-const model = require('./model.js');
+// use router
+const router = require('./config/routes');
 
 const app = express();
 
@@ -33,43 +33,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //set public folder as static folder for static file
 app.use(express.static('public'));
 
-app.get('/', (req, res) => {
-    model.getAllProducts((results) => {
-        res.render('product_view', {
-            results: results
-        });
-    });
-});
-
-app.post('/store', (req, res) => {
-    let data = {
-        productName: req.body.product_name,
-        productPrice: req.body.product_price
-    };
-    model.saveProduct(data, (result) => {
-        result.affectedRows > 0 ? res.redirect('/') : null;
-    });
-});
-
-app.post('/update', (req, res) => {
-    let data = {
-        productId: req.body.product_id,
-        productName: req.body.product_name,
-        productPrice: req.body.product_price
-    };
-    model.updateProduct(data, (result) => {
-        result.affectedRows > 0 ? res.redirect('/') : null;
-    })
-});
-
-app.post('/delete', (req, res) => {
-    data = {
-        productId: req.body.product_id,
-    }
-    model.deleteProduct(data, (result) => {
-        result.affectedRows > 0 ? res.redirect('/') : null;
-    })
-});
+app.use("/", router);
 
 app.listen(8000, () => {
     console.log("The server is running on port 8000");

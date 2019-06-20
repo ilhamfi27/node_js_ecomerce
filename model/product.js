@@ -1,5 +1,5 @@
 // require database config
-const db = require('./config/database');
+const db = require('../config/database');
 
 let productModel = {
     getAllProducts: (callback) => {

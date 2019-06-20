@@ -1,8 +1,11 @@
 const express = require('express');
+
+const productRoutes = require('../routes/productRoutes.js');
+const landingRoutes = require('../routes/landingRoutes.js');
+
 const router = express.Router();
 
-// middleware that is specific to this router
-router.use(function timeLog (req, res, next) {
-    console.log('Time: ', Date.now());
-    next();
-});
+router.use("/", landingRoutes);
+router.use("/products", productRoutes);
+
+module.exports = router;
